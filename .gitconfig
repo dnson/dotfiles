@@ -1,0 +1,7 @@
+[user]
+	email = dnson272@gmail.com
+	name = Son Dinh
+[diff]
+	tool = vimdiff
+[color]
+	ui = true
