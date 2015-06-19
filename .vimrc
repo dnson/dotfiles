@@ -13,7 +13,7 @@ Plugin 'chrisbra/csv.vim'
 Plugin 'vim-scripts/SearchComplete'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'elzr/vim-json'
-"Plugin 'lukaszkorecki/CoffeeTags'
+Plugin 'lukaszkorecki/CoffeeTags'
 Plugin 'mklabs/grunt.vim'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'digitaltoad/vim-jade.git'
@@ -51,12 +51,21 @@ Plugin 'ervandew/supertab'
 Plugin 'rking/ag.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'Shougo/Unite.Vim'
+Plugin 'Shougo/unite-outline'
+
+
+Bundle "gregsexton/gitv"
+Bundle "mattn/gist-vim"
+Bundle "tpope/vim-fugitive"
+Bundle "tpope/vim-git"
+Bundle 'mattn/webapi-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-"execute pathogen#infect()
+execute pathogen#infect()
 let g:ft_ignore_pat = '\.org'
 filetype plugin indent on
 filetype plugin on
@@ -191,5 +200,10 @@ endif
 
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
-
+vnoremap # :s#^#\##<cr>
+vnoremap -# :s#^\###<cr>
 let maplocalleader = ',,'
+nmap <C-b> <Esc>:Unite buffer<CR>
+nmap <C-f> <Esc>:Unite file<CR>
+nmap <C-F8> <Esc>:Unite outline<CR>
+
