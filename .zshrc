@@ -5,9 +5,9 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-#ZSH_THEME="robbyrussell"
+ZSH_THEME="bullet-train"
+
 #ZSH_THEME="agnoster"
-ZSH_THEME="miloshadzic"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -47,12 +47,24 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git jump vi-mode web-search vim-interaction)
+plugins=(git autojump vi-mode web-search vim-interaction vundle tmux rake docker ruby rails golang)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 source ~/.bash_profile
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+compctl -g '~/.teamocil/*(:t:r)' teamocil
+
+bindkey '^[f' vi-forward-word
+bindkey '^[b' backward-word
+bindkey '^e' end-of-line
+bindkey '^a' beginning-of-line
+bindkey '^k' forward-kill-word
+bindkey '^r' history-incremental-search-backward
+
+export KEYTIMEOUT=1
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -79,20 +91,61 @@ source ~/.bash_profile
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-compctl -g '~/.teamocil/*(:t:r)' teamocil
-export GOROOT=/usr/local/go
+alias m=make
 
+export PATH=$PATH:/usr/local/go/bin
 
-export GOPATH=$HOME/Dropbox/projects/research/golang
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
-export PATH="$HOME/.linuxbrew/bin:$PATH"
-export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
-export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
-compctl -g '~/.teamocil/*(:t:r)' teamocil
+#review the old command
+function peco-select-history() {
+    local tac
+    if which tac > /dev/null; then
+        tac="tac"
+    else
+        tac="tail -r"
+    fi
+    BUFFER=$(\history -n 1 | \
+        eval $tac | \
+        peco --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle clear-screen
+}
+zle -N peco-select-history
+bindkey '^f' peco-select-history
+###
 
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+#twc_gulp_rtl
+
+function gulp_rtl() {
+  gulp css-theme 
+  gulp css-module
+  gulp  css-shared
+}
+####
+
+#twc_init_module
+function init_module() {
+  rm translations/*
+  module_name=`basename "$PWD"`
+  echo "# Translation of $module_name module (7.x-3.12)
+  #
+  msgid \"\"
+msgstr \"\"
+\"Project-Id-Version: shared:$module_name (7.x-3.12)\\\n\"
+\"POT-Creation-Date: 2015-05-01 07:45+0000\\\n\"
+\"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\\\n\"
+\"Language-Team: Jason Smith\n\"
+\"MIME-Version: 1.0\n\"
+\"Content-Type: text/plain; charset=utf-8\\\n\"
+\"Content-Transfer-Encoding: 8bit\n\"
+\"Plural-Forms: nplurals=2; plural=n != 1;\\\n\"
+
+#header" > "translations/$module_name.en-US.po"
+
+  rm gemfile
+  rm guardfile
+  rm config.rb
+  ln -s ../../lib/ruby/Gemfile Gemfile
+  ln -s ../../lib/ruby/Guardfile Guardfile
+  ln -s ../../lib/ruby/config.rb config.rb
+}
+###

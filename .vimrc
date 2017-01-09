@@ -4,6 +4,22 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+Plugin 'tpope/vim-fireplace'
+Plugin 'guns/vim-clojure-static'
+Plugin 'szw/vim-g'
+Plugin 'vasconcelloslf/vim-interestingwords'
+Plugin 'wellle/tmux-complete.vim'
+Plugin 'xolox/vim-misc'
+Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'xolox/vim-easytags'
+Plugin 'thinca/vim-quickrun'
+Plugin 'Shougo/unite.vim'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'Shougo/vimshell.vim'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'regedarek/ZoomWin'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'corntrace/bufexplorer'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'vimoutliner/vimoutliner'
 Plugin 'tpope/vim-speeddating'
@@ -13,11 +29,11 @@ Plugin 'chrisbra/csv.vim'
 Plugin 'vim-scripts/SearchComplete'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'elzr/vim-json'
-Plugin 'lukaszkorecki/CoffeeTags'
+"Plugin 'lukaszkorecki/CoffeeTags'
 Plugin 'mklabs/grunt.vim'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'digitaltoad/vim-jade.git'
-Plugin 'vim-scripts/Conque-Shell'
+"Plugin 'kchmck/vim-coffee-script'
+"Plugin 'digitaltoad/vim-jade.git'
+"Plugin 'vim-scripts/Conque-Shell'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/dbext.vim'
 Plugin 'Raimondi/delimitMate'
@@ -25,7 +41,7 @@ Plugin 'sickill/vim-monokai'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'chrisbra/NrrwRgn'
-Plugin 'aklt/plantuml-syntax'
+"Plugin 'aklt/plantuml-syntax'
 Plugin 'ktvoelker/sbt-vim.git'
 Plugin 'scrooloose/syntastic'
 Plugin 'mkitt/tabline.vim.git'
@@ -33,7 +49,8 @@ Plugin 'godlygeek/tabular'
 Plugin 'majutsushi/tagbar'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'sirver/ultisnips'
-Plugin 'vim-scripts/vcscommand.vim'
+Plugin 'tpope/vim-fugitive'
+"Plugin 'vim-scripts/vcscommand.vim'
 Plugin 'bling/vim-airline'
 Plugin 'fatih/vim-go'
 Plugin 'plasticboy/vim-markdown'
@@ -44,28 +61,20 @@ Plugin 'mhinz/vim-signify'
 Plugin 'jpalardy/vim-slime.git'
 Plugin 'honza/vim-snippets'
 Plugin 'tpope/vim-surround'
-Plugin 'spiroid/vim-ultisnip-scala'
+"Plugin 'spiroid/vim-ultisnip-scala'
 Plugin 'gmarik/Vundle.vim.git'
 Plugin 'othree/xml.vim'
 Plugin 'ervandew/supertab'
 Plugin 'rking/ag.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'Shougo/Unite.Vim'
-Plugin 'Shougo/unite-outline'
-
-
-Bundle "gregsexton/gitv"
-Bundle "mattn/gist-vim"
-Bundle "tpope/vim-fugitive"
-Bundle "tpope/vim-git"
-Bundle 'mattn/webapi-vim'
+Plugin 'vim-airline/vim-airline-themes'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-execute pathogen#infect()
+"execute pathogen#infect()
 let g:ft_ignore_pat = '\.org'
 filetype plugin indent on
 filetype plugin on
@@ -86,10 +95,12 @@ syntax on
 let g:utl_cfg_hdl_scm_http_system = "silent !google-chrome %u &"
 
 set number
+set relativenumber
 set smartindent
 " size of tabstop
 set tabstop=2
 set incsearch
+set fileformat=unix
 
 " size of an indent
 set shiftwidth=2
@@ -102,6 +113,9 @@ set expandtab
 
 nmap <F8> :TagbarToggle<CR>
 let g:tagbar_autoshowtag = 0
+
+nmap <Leader>ne :NERDTreeToggle<CR>
+nmap <Leader>nf :NERDTreeFind<CR>
 
 nnoremap <F5> :silent update<Bar>silent !google-chrome %:p &<CR>
 "nnoremap <F15>c :exe ':silent !google-chrome %'<CR>
@@ -143,6 +157,16 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:ycm_auto_trigger=1
+let g:ycm_key_invoke_completion = '<C-Space>'
+let g:ycm_complete_in_strings = 1 "default 1
+let g:ycm_min_num_of_chars_for_completion=3
+let g:ycm_register_as_syntastic_checker = 1 "default 1
+let g:Show_diagnostics_ui = 1 "default 1
+let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_enable_diagnostic_highlighting = 1
+let g:ycm_always_populate_location_list = 1 "default 0
+
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " better key bindings for UltiSnipsExpandTrigger
@@ -170,7 +194,6 @@ colorscheme monokai
 "  set background=light
 "endif
 
-let g:signify_vcs_list = [ 'svn', 'git' ]
 let g:ycm_server_keep_logfiles = '1'
 set t_ut=
 
@@ -182,6 +205,7 @@ if exists(":Tabularize")
 endif
 
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+inoremap jj <esc>
 
 function! s:align()
   let p = '^\s*|\s.*\s|\s*$'
@@ -200,10 +224,67 @@ endif
 
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
-vnoremap # :s#^#\##<cr>
-vnoremap -# :s#^\###<cr>
-let maplocalleader = ',,'
-nmap <C-b> <Esc>:Unite buffer<CR>
-nmap <C-f> <Esc>:Unite file<CR>
-nmap <C-F8> <Esc>:Unite outline<CR>
 
+let maplocalleader = ',,'
+
+let g:EclimCompletionMethod = 'omnifunc'
+let g:SuperTabDefaultCompletionType = 'context'
+
+" Rainbow parantheses
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+" Automatically reload vim config(s)
+augroup myvimrc
+  au!
+  au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
+
+let indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=darkgrey   ctermbg=236
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey   ctermbg=237
+let indent_guides_color_change_percent = 10
+let indent_guides_guide_size = 2
+
+" VimShell
+" Use current directory as vimshell prompt.
+let g:vimshell_prompt_expr =
+\ 'escape(fnamemodify(getcwd(), ":~").">", "\\[]()?! ")." "'
+let g:vimshell_prompt_pattern = '^\%(\f\|\\.\)\+> '
+
+" easytags
+let g:easytags_async = 1
+let g:easytags_auto_highlight = 0
+
+let g:go_fmt_fail_silently = 1
+let g:go_fmt_autosave = 1
+let g:go_highlight_functions = 0
+let g:go_highlight_methods = 0
+let g:go_highlight_structs = 0
+let g:go_fmt_command = "goimports"
+let g:session_autosave = 'yes'
+
+" tmuxcomplete
+let g:tmuxcomplete#trigger = 'omnifunc'
